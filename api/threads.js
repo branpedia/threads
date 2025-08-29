@@ -26,17 +26,23 @@ export default async function handler(req, res) {
     });
   }
 
-  // Validasi URL
-  if (!url.includes('threads.net') || !url.includes('/post/')) {
+  // Validasi URL - perbaikan di sini
+  if (!(url.includes('threads.net') || url.includes('threads.com')) || !url.includes('/post/')) {
     return res.status(400).json({ 
       success: false,
-      error: 'URL Threads tidak valid. Pastikan URL mengandung threads.net dan /post/' 
+      error: 'URL Threads tidak valid. Pastikan URL mengandung threads.net/threads.com dan /post/' 
     });
   }
 
   try {
+    // Normalisasi URL - ubah threads.com menjadi threads.net
+    let normalizedUrl = url;
+    if (url.includes('threads.com')) {
+      normalizedUrl = url.replace('threads.com', 'threads.net');
+    }
+    
     // Ekstrak ID post dari URL
-    const postIdMatch = url.match(/\/post\/([a-zA-Z0-9]+)/);
+    const postIdMatch = normalizedUrl.match(/\/post\/([a-zA-Z0-9_-]+)/);
     if (!postIdMatch || !postIdMatch[1]) {
       return res.status(400).json({ 
         success: false,
@@ -51,7 +57,7 @@ export default async function handler(req, res) {
     
     // Jika server 1 gagal, coba server 2 (threadsphotodownloader)
     if (!data) {
-      data = await tryServer2(url);
+      data = await tryServer2(normalizedUrl);
     }
     
     if (!data) {
