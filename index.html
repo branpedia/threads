@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threads Downloader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background-color: #000;
+            color: white;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+        
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #333;
+        }
+        
+        .result {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .result h2 {
+            margin-bottom: 15px;
+            color: #000;
+        }
+        
+        .media-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .media-item {
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .media-item img, .media-item video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 15px;
+            background-color: #000;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .user-details h3 {
+            margin-bottom: 5px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #000;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px 0;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .input-group {
+                flex-direction: column;
+            }
+            
+            input[type="text"] {
+                border-radius: 4px;
+                margin-bottom: 10px;
+            }
+            
+            button {
+                border-radius: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Threads Downloader</h1>
+            <p class="description">Download konten dari Threads dengan mudah</p>
+        </header>
+        
+        <main>
+            <div class="input-group">
+                <input type="text" id="threadsUrl" placeholder="Masukkan URL Threads (contoh: https://www.threads.net/@username/post/...)">
+                <button id="downloadBtn">Download</button>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Memproses permintaan...</p>
+            </div>
+            
+            <div class="error" id="error"></div>
+            
+            <div class="result" id="result">
+                <!-- Hasil akan ditampilkan di sini -->
+            </div>
+        </main>
+        
+        <footer>
+            <p>Dibuat dengan ❤️ oleh ZenzzXD</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadBtn = document.getElementById('downloadBtn');
+            const threadsUrlInput = document.getElementById('threadsUrl');
+            const resultDiv = document.getElementById('result');
+            const loadingDiv = document.getElementById('loading');
+            const errorDiv = document.getElementById('error');
+            
+            downloadBtn.addEventListener('click', async function() {
+                const url = threadsUrlInput.value.trim();
+                
+                if (!url) {
+                    showError('Masukkan URL Threads terlebih dahulu');
+                    return;
+                }
+                
+                if (!url.includes('threads.net') || !url.includes('/post/')) {
+                    showError('URL Threads tidak valid. Pastikan URL mengandung threads.net dan /post/');
+                    return;
+                }
+                
+                // Tampilkan loading, sembunyikan error dan hasil sebelumnya
+                loadingDiv.style.display = 'block';
+                errorDiv.style.display = 'none';
+                resultDiv.style.display = 'none';
+                
+                try {
+                    // Ekstrak ID post dari URL
+                    const postIdMatch = url.match(/\/post\/([a-zA-Z0-9]+)/);
+                    if (!postIdMatch || !postIdMatch[1]) {
+                        throw new Error('Gagal mengekstrak ID post dari URL');
+                    }
+                    
+                    const postId = postIdMatch[1];
+                    
+                    // Panggil API
+                    const response = await fetch(`/api/threads?url=${encodeURIComponent(url)}&id=${postId}`);
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Terjadi kesalahan saat memproses permintaan');
+                    }
+                    
+                    // Tampilkan hasil
+                    displayResult(data);
+                } catch (error) {
+                    showError(error.message);
+                } finally {
+                    loadingDiv.style.display = 'none';
+                }
+            });
+            
+            function showError(message) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+            
+            function displayResult(data) {
+                resultDiv.innerHTML = '';
+                
+                // Tampilkan info pengguna
+                const userInfo = document.createElement('div');
+                userInfo.className = 'user-info';
+                userInfo.innerHTML = `
+                    <img src="${data.user.avatar}" alt="${data.user.full_name}" class="avatar">
+                    <div class="user-details">
+                        <h3>${data.user.full_name} ${data.user.verified ? '✓' : ''}</h3>
+                        <p>@${data.user.username}</p>
+                        <p>${data.user.follower_count} followers</p>
+                    </div>
+                `;
+                resultDiv.appendChild(userInfo);
+                
+                // Tampilkan caption
+                if (data.post_detail.caption_text) {
+                    const caption = document.createElement('p');
+                    caption.textContent = data.post_detail.caption_text;
+                    caption.style.marginBottom = '20px';
+                    resultDiv.appendChild(caption);
+                }
+                
+                // Tampilkan media
+                if (data.post_detail.media_list && data.post_detail.media_list.length > 0) {
+                    const mediaContainer = document.createElement('div');
+                    mediaContainer.className = 'media-container';
+                    
+                    data.post_detail.media_list.forEach(media => {
+                        const mediaItem = document.createElement('div');
+                        mediaItem.className = 'media-item';
+                        
+                        if (media.media_type === 1 || media.media_type === 8) {
+                            // Image
+                            const img = document.createElement('img');
+                            img.src = media.url;
+                            img.alt = 'Threads image';
+                            mediaItem.appendChild(img);
+                            
+                            const downloadLink = document.createElement('a');
+                            downloadLink.href = media.url;
+                            downloadLink.className = 'download-btn';
+                            downloadLink.textContent = 'Download Gambar';
+                            downloadLink.download = true;
+                            mediaItem.appendChild(downloadLink);
+                        } else if (media.media_type === 2) {
+                            // Video
+                            const video = document.createElement('video');
+                            video.controls = true;
+                            video.src = media.url;
+                            mediaItem.appendChild(video);
+                            
+                            const downloadLink = document.createElement('a');
+                            downloadLink.href = media.url;
+                            downloadLink.className = 'download-btn';
+                            downloadLink.textContent = 'Download Video';
+                            downloadLink.download = true;
+                            mediaItem.appendChild(downloadLink);
+                        }
+                        
+                        mediaContainer.appendChild(mediaItem);
+                    });
+                    
+                    resultDiv.appendChild(mediaContainer);
+                }
+                
+                // Tampilkan info tambahan
+                const postInfo = document.createElement('div');
+                postInfo.style.marginTop = '20px';
+                postInfo.innerHTML = `
+                    <p><strong>Likes:</strong> ${data.post_detail.like_count}</p>
+                    <p><strong>Dipublikasikan:</strong> ${new Date(data.post_detail.publish_time).toLocaleString()}</p>
+                `;
+                resultDiv.appendChild(postInfo);
+                
+                resultDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
