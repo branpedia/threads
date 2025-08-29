@@ -11,259 +11,102 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
         body {
-            background: linear-gradient(135deg, #000000, #2d2d2d);
-            color: #fff;
+            background-color: #f5f5f5;
+            color: #333;
             line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
         }
-        
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 20px;
         }
-        
         header {
             text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #444;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
         h1 {
-            font-size: 2.2rem;
             margin-bottom: 10px;
-            background: linear-gradient(90deg, #ffdd00, #ff5e00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
-        
         .description {
-            color: #ccc;
-            margin-bottom: 20px;
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
-        
         .input-group {
-            display: flex;
             margin-bottom: 20px;
         }
-        
         input[type="text"] {
-            flex: 1;
-            padding: 14px;
-            border: 2px solid #444;
-            border-radius: 8px 0 0 8px;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             font-size: 16px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            outline: none;
         }
-        
-        input[type="text"]:focus {
-            border-color: #ff9900;
-        }
-        
         button {
-            padding: 14px 24px;
-            background: linear-gradient(90deg, #ff9900, #ff5500);
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
             color: white;
             border: none;
-            border-radius: 0 8px 8px 0;
+            padding: 12px 20px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
+            font-size: 16px;
+            transition: all 0.3s ease;
         }
-        
         button:hover {
-            background: linear-gradient(90deg, #ffaa33, #ff7733);
+            opacity: 0.9;
+            transform: translateY(-2px);
         }
-        
-        .loading {
-            text-align: center;
-            padding: 20px;
-            display: none;
-        }
-        
-        .spinner {
-            border: 4px solid rgba(255, 153, 0, 0.3);
-            border-left-color: #ff9900;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .error {
-            background: rgba(255, 0, 0, 0.2);
-            color: #ff6666;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-            border-left: 4px solid #ff3333;
-        }
-        
         .result {
-            display: none;
-            margin-top: 20px;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.5);
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
             border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
-        .avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin-right: 15px;
-            object-fit: cover;
-            border: 2px solid #ff9900;
-        }
-        
-        .user-details h3 {
-            margin-bottom: 5px;
-            color: #ff9900;
-        }
-        
         .media-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
-            margin-top: 15px;
+            margin-top: 20px;
         }
-        
         .media-item {
             border-radius: 8px;
             overflow: hidden;
-            background: rgba(0, 0, 0, 0.5);
-            position: relative;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
         .media-item img, .media-item video {
             width: 100%;
             height: auto;
             display: block;
         }
-        
-        .video-thumbnail {
-            position: relative;
-            cursor: pointer;
-        }
-        
-        .play-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .play-icon::before {
-            content: '';
-            border-style: solid;
-            border-width: 10px 0 10px 16px;
-            border-color: transparent transparent transparent #ffffff;
-            margin-left: 4px;
-        }
-        
-        .download-btn {
-            display: block;
-            text-align: center;
+        .error {
+            color: #e74c3c;
             padding: 10px;
-            background: linear-gradient(90deg, #ff9900, #ff5500);
-            color: white;
-            text-decoration: none;
+            background-color: #fadbd8;
             border-radius: 4px;
-            font-weight: bold;
             margin-top: 10px;
-            cursor: pointer;
-            border: none;
-            width: 100%;
         }
-        
-        .download-btn:hover {
-            background: linear-gradient(90deg, #ffaa33, #ff7733);
-        }
-        
-        .api-info {
-            margin-top: 30px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-        
-        .api-info h3 {
-            color: #ff9900;
-            margin-bottom: 10px;
-        }
-        
-        .code {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 12px;
-            border-radius: 6px;
-            overflow-x: auto;
-            font-family: monospace;
-            color: #ff9900;
-            margin: 10px 0;
-            font-size: 0.85rem;
-        }
-        
-        footer {
+        .loading {
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            color: #aaa;
-            font-size: 0.9rem;
-            border-top: 1px solid #444;
+            padding: 20px;
         }
-        
-        @media (max-width: 600px) {
-            .input-group {
-                flex-direction: column;
-            }
-            
-            input[type="text"] {
-                border-radius: 8px;
-                margin-bottom: 10px;
-            }
-            
-            button {
-                border-radius: 8px;
-            }
-            
-            .user-info {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .avatar {
-                margin-right: 0;
-                margin-bottom: 10px;
-            }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #6e8efb;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -273,298 +116,103 @@
             <h1>Threads Downloader V2</h1>
             <p class="description">Download konten dari Threads dengan mudah menggunakan API V2</p>
         </header>
-        
-        <main>
-            <div class="input-group">
-                <input type="text" id="threadsUrl" placeholder="Masukkan URL Threads (contoh: https://www.threads.com/@username/post/...)">
-                <button id="downloadBtn">Download</button>
-            </div>
-            
-            <div class="error" id="error"></div>
-            
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Memproses...</p>
-            </div>
-            
-            <div class="result" id="result">
-                <!-- Hasil akan ditampilkan di sini -->
-            </div>
-            
-            <div class="api-info">
-                <h3>API Documentation</h3>
-                <p>Anda juga dapat mengakses API ini langsung melalui endpoint berikut:</p>
-                <div class="code">
-                    GET /api/threads?url={threads_url}
-                </div>
-                <p>Contoh penggunaan dengan curl:</p>
-                <div class="code">
-                    curl -X 'GET' \<br>
-                    'https://your-vercel-app.vercel.app/api/threads?url=https://www.threads.net/@yoda_erika/post/DN53X7Ik3al' \<br>
-                    -H 'accept: application/json'
-                </div>
-                <p>Response JSON akan berisi:</p>
-                <div class="code">
-                    {<br>
-                    &nbsp;&nbsp;"success": true,<br>
-                    &nbsp;&nbsp;"data": {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;"username": "otaku_anime_indonesia",<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;"full_name": "Otaku Anime Indonesia",<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;"caption": "Kerjanya nonton apa?!",<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;"likes": 857,<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;"media": [<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type": "video",<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"url": "https://video-url.mp4"<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;]<br>
-                    &nbsp;&nbsp;}<br>
-                    }
-                </div>
-            </div>
-        </main>
-        
-        <footer>
-            <p>Dibuat dengan ❤️ oleh ZenzzXD | Threads Downloader V2</p>
-        </footer>
+
+        <div class="input-group">
+            <input type="text" id="threadUrl" placeholder="Masukkan URL Threads (contoh: https://www.threads.net/@username/post/ABC123)" />
+            <button onclick="downloadThread()">Download</button>
+        </div>
+
+        <div id="result" class="result" style="display: none;">
+            <!-- Hasil akan ditampilkan di sini -->
+        </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const downloadBtn = document.getElementById('downloadBtn');
-            const threadsUrlInput = document.getElementById('threadsUrl');
+        async function downloadThread() {
+            const url = document.getElementById('threadUrl').value;
             const resultDiv = document.getElementById('result');
-            const loadingDiv = document.getElementById('loading');
-            const errorDiv = document.getElementById('error');
             
-            downloadBtn.addEventListener('click', async function() {
-                const url = threadsUrlInput.value.trim();
-                
-                if (!url) {
-                    showError('Masukkan URL Threads terlebih dahulu');
-                    return;
-                }
-                
-                // Validasi URL
-                if (!isValidThreadsUrl(url)) {
-                    showError('URL Threads tidak valid. Pastikan URL mengandung threads.net/threads.com dan /post/');
-                    return;
-                }
-                
-                // Tampilkan loading, sembunyikan error dan hasil sebelumnya
-                loadingDiv.style.display = 'block';
-                errorDiv.style.display = 'none';
-                resultDiv.style.display = 'none';
-                
-                try {
-                    // Ekstrak ID post dari URL
-                    const postId = extractPostId(url);
-                    if (!postId) {
-                        throw new Error('Gagal mengekstrak ID post dari URL');
-                    }
-                    
-                    // Panggil API V2
-                    const response = await fetch(`https://www.dolphinradar.com/api/threads/post_detail/${postId}`);
-                    
-                    if (!response.ok) {
-                        throw new Error('Terjadi kesalahan saat memproses permintaan');
-                    }
-                    
-                    const data = await response.json();
-                    
-                    if (data.code !== 0 || !data.data) {
-                        throw new Error(data.message || 'Gagal mengambil data');
-                    }
-                    
-                    // Format data untuk ditampilkan
-                    const formattedData = {
-                        user: {
-                            username: data.data.user.username,
-                            full_name: data.data.user.full_name,
-                            avatar: data.data.user.avatar,
-                            follower_count: data.data.user.follower_count,
-                            verified: data.data.user.verified
-                        },
-                        caption: data.data.post_detail.caption_text,
-                        likes: data.data.post_detail.like_count,
-                        publish_time: data.data.post_detail.publish_time,
-                        media: data.data.post_detail.media_list ? data.data.post_detail.media_list.map(media => ({
-                            type: media.media_type === 2 ? 'video' : 'image',
-                            url: media.url,
-                            cover_image: media.cover_image
-                        })) : []
-                    };
-                    
-                    // Tampilkan hasil
-                    displayResult(formattedData);
-                } catch (error) {
-                    showError(error.message);
-                } finally {
-                    loadingDiv.style.display = 'none';
-                }
-            });
-            
-            function isValidThreadsUrl(url) {
-                return (url.includes('threads.net') || url.includes('threads.com')) && url.includes('/post/');
-            }
-            
-            function extractPostId(url) {
-                try {
-                    // Ekstrak bagian setelah /post/
-                    const postMatch = url.match(/\/post\/([^\/\?]+)/);
-                    if (postMatch && postMatch[1]) {
-                        return postMatch[1];
-                    }
-                    return null;
-                } catch (e) {
-                    return null;
-                }
-            }
-            
-            function showError(message) {
-                errorDiv.textContent = message;
-                errorDiv.style.display = 'block';
-            }
-            
-            function displayResult(data) {
-                resultDiv.innerHTML = '';
-                
-                // Tampilkan info pengguna
-                const userInfo = document.createElement('div');
-                userInfo.className = 'user-info';
-                userInfo.innerHTML = `
-                    <img src="${data.user.avatar}" alt="${data.user.full_name}" class="avatar" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NjYiIGR5PSIuNGVtIj5QUDwvdGV4dD48L3N2Zz4='">
-                    <div class="user-details">
-                        <h3>${data.user.full_name} ${data.user.verified ? '✓' : ''}</h3>
-                        <p>@${data.user.username} | ${data.user.follower_count.toLocaleString()} followers</p>
-                    </div>
-                `;
-                resultDiv.appendChild(userInfo);
-                
-                // Tampilkan caption
-                if (data.caption) {
-                    const caption = document.createElement('p');
-                    caption.textContent = data.caption;
-                    caption.style.marginBottom = '15px';
-                    resultDiv.appendChild(caption);
-                }
-                
-                // Tampilkan media
-                if (data.media && data.media.length > 0) {
-                    const mediaContainer = document.createElement('div');
-                    mediaContainer.className = 'media-container';
-                    
-                    data.media.forEach((media, index) => {
-                        const mediaItem = document.createElement('div');
-                        mediaItem.className = 'media-item';
-                        
-                        if (media.type === 'image') {
-                            const img = document.createElement('img');
-                            img.src = media.url || media.cover_image;
-                            img.alt = 'Threads image';
-                            img.onerror = function() {
-                                this.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NjYiIGR5PSIuM2VtIj5JbWFnZTwvdGV4dD48L3N2Zz4=';
-                            };
-                            mediaItem.appendChild(img);
-                            
-                            const downloadBtn = document.createElement('button');
-                            downloadBtn.className = 'download-btn';
-                            downloadBtn.textContent = 'Download Gambar';
-                            downloadBtn.onclick = function() {
-                                downloadMedia(media.url || media.cover_image, `threads-image-${index+1}.jpg`);
-                            };
-                            mediaItem.appendChild(downloadBtn);
-                        } else if (media.type === 'video') {
-                            const videoThumb = document.createElement('div');
-                            videoThumb.className = 'video-thumbnail';
-                            
-                            const img = document.createElement('img');
-                            img.src = media.cover_image;
-                            img.alt = 'Video thumbnail';
-                            img.onerror = function() {
-                                this.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMyIvPjxwb2x5Z29uIHBvaW50cz0iNzAsNDAgNzAsMTYwIDE2MCwxMDAiIGZpbGw9IiM2NjYiLz48L3N2Zz4=';
-                            };
-                            videoThumb.appendChild(img);
-                            
-                            const playIcon = document.createElement('div');
-                            playIcon.className = 'play-icon';
-                            videoThumb.appendChild(playIcon);
-                            
-                            // Ketika thumbnail diklik, tampilkan video
-                            videoThumb.onclick = function() {
-                                const videoElement = document.createElement('video');
-                                videoElement.controls = true;
-                                videoElement.src = media.url;
-                                videoElement.style.width = '100%';
-                                
-                                videoThumb.replaceWith(videoElement);
-                            };
-                            
-                            mediaItem.appendChild(videoThumb);
-                            
-                            const downloadBtn = document.createElement('button');
-                            downloadBtn.className = 'download-btn';
-                            downloadBtn.textContent = 'Download Video';
-                            downloadBtn.onclick = function() {
-                                downloadMedia(media.url, `threads-video-${index+1}.mp4`);
-                            };
-                            mediaItem.appendChild(downloadBtn);
-                        }
-                        
-                        mediaContainer.appendChild(mediaItem);
-                    });
-                    
-                    resultDiv.appendChild(mediaContainer);
-                } else {
-                    const noMedia = document.createElement('p');
-                    noMedia.textContent = 'Tidak ada media yang ditemukan dalam postingan ini.';
-                    noMedia.style.textAlign = 'center';
-                    noMedia.style.padding = '15px';
-                    resultDiv.appendChild(noMedia);
-                }
-                
-                // Tampilkan info tambahan
-                const postInfo = document.createElement('div');
-                postInfo.style.marginTop = '15px';
-                postInfo.innerHTML = `
-                    <p><strong>Likes:</strong> ${data.likes.toLocaleString()} | <strong>Dipublikasikan:</strong> ${data.publish_time}</p>
-                `;
-                resultDiv.appendChild(postInfo);
-                
+            if (!url) {
+                resultDiv.innerHTML = '<div class="error">Harap masukkan URL Threads</div>';
                 resultDiv.style.display = 'block';
+                return;
             }
-            
-            function downloadMedia(url, filename) {
-                // Gunakan fetch untuk mengunduh media
-                fetch(url)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        // Buat URL objek untuk blob
-                        const blobUrl = URL.createObjectURL(blob);
-                        
-                        // Buat elemen a untuk mengunduh
-                        const a = document.createElement('a');
-                        a.href = blobUrl;
-                        a.download = filename;
-                        document.body.appendChild(a);
-                        a.click();
-                        
-                        // Bersihkan
-                        setTimeout(() => {
-                            document.body.removeChild(a);
-                            URL.revokeObjectURL(blobUrl);
-                        }, 100);
-                    })
-                    .catch(error => {
-                        console.error('Error downloading media:', error);
-                        // Fallback: buka di tab baru jika download langsung gagal
-                        window.open(url, '_blank');
-                    });
+
+            // Tampilkan loading
+            resultDiv.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Memproses...</p>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
+
+            try {
+                const response = await fetch(`/api/threads?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayResult(data.data);
+                } else {
+                    resultDiv.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">Terjadi kesalahan: ${error.message}</div>`;
             }
-            
-            // Contoh URL untuk testing
-            threadsUrlInput.value = 'https://www.threads.com/@otaku_anime_indonesia/post/DN7QaQkATv7?xmt=AQF0OtHSzHZnbK3tH8eoJydu9W_1G_aal4306kSzZjjmuw&slof=1';
-        });
+        }
+
+        function displayResult(data) {
+            const resultDiv = document.getElementById('result');
+            const post = data.data.post_detail;
+            const user = data.data.user;
+
+            let html = `
+                <h2>Hasil Download</h2>
+                <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                    <img src="${user.avatar}" alt="${user.username}" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px;">
+                    <div>
+                        <h3>${user.full_name} (@${user.username})</h3>
+                        <p>${user.follower_count} followers</p>
+                    </div>
+                </div>
+                <p>${post.caption_text || 'Tidak ada teks'}</p>
+                <p><small>Diposting pada: ${post.publish_time}</small></p>
+                <p><small>Likes: ${post.like_count}</small></p>
+            `;
+
+            if (post.media_list && post.media_list.length > 0) {
+                html += `<h3>Media (${post.media_list.length})</h3>`;
+                html += `<div class="media-container">`;
+                
+                post.media_list.forEach(media => {
+                    // Ambil URL media dengan kualitas tertinggi
+                    const mediaUrl = media.version_medias && media.version_medias.length > 0 
+                        ? media.version_medias[0].url 
+                        : media.url;
+                    
+                    if (media.media_type === 1) { // Gambar
+                        html += `
+                            <div class="media-item">
+                                <img src="${mediaUrl}" alt="Threads media">
+                            </div>
+                        `;
+                    } else if (media.media_type === 2) { // Video
+                        html += `
+                            <div class="media-item">
+                                <video controls>
+                                    <source src="${mediaUrl}" type="video/mp4">
+                                    Browser Anda tidak mendukung tag video.
+                                </video>
+                            </div>
+                        `;
+                    }
+                });
+                
+                html += `</div>`;
+            }
+
+            resultDiv.innerHTML = html;
+        }
     </script>
 </body>
 </html>
