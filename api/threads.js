@@ -3,9 +3,6 @@ import axios from 'axios';
 export default async function handler(req, res) {
   // Handle preflight request for CORS
   if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     return res.status(200).end();
   }
 
@@ -35,10 +32,6 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'Post tidak ditemukan atau tidak dapat diakses' });
     }
 
-    // Set CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    
     // Kembalikan data dalam format JSON
     res.status(200).json(data.data);
   } catch (error) {
@@ -46,3 +39,11 @@ export default async function handler(req, res) {
     res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data' });
   }
 }
+
+// Konfigurasi untuk menangani CORS
+export const config = {
+  api: {
+    responseLimit: false,
+    externalResolver: true,
+  },
+};
