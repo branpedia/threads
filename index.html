@@ -13,13 +13,14 @@
         }
         
         body {
-            background-color: #f5f5f5;
-            color: #333;
+            background: linear-gradient(135deg, #000000, #2d2d2d);
+            color: #fff;
             line-height: 1.6;
+            min-height: 100vh;
         }
         
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -27,76 +28,109 @@
         header {
             text-align: center;
             margin-bottom: 30px;
-            padding: 20px 0;
-            background-color: #000;
-            color: white;
-            border-radius: 8px;
+            padding: 30px 0;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 10px;
+            background: linear-gradient(90deg, #ffdd00, #ff5e00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .description {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-bottom: 20px;
             color: #ccc;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .input-group {
             display: flex;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         input[type="text"] {
             flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px 0 0 4px;
+            padding: 16px 20px;
+            border: 2px solid #444;
+            border-radius: 8px 0 0 8px;
             font-size: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            outline: none;
+        }
+        
+        input[type="text"]:focus {
+            border-color: #ff9900;
+        }
+        
+        input[type="text"]::placeholder {
+            color: #aaa;
         }
         
         button {
-            padding: 12px 20px;
-            background-color: #000;
+            padding: 16px 28px;
+            background: linear-gradient(90deg, #ff9900, #ff5500);
             color: white;
             border: none;
-            border-radius: 0 4px 4px 0;
+            border-radius: 0 8px 8px 0;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s;
+            font-weight: bold;
+            transition: all 0.3s;
         }
         
         button:hover {
-            background-color: #333;
+            background: linear-gradient(90deg, #ffaa33, #ff7733);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 153, 0, 0.4);
         }
         
         .result {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-top: 30px;
             display: none;
+            backdrop-filter: blur(10px);
         }
         
         .result h2 {
-            margin-bottom: 15px;
-            color: #000;
+            margin-bottom: 20px;
+            color: #ff9900;
+            border-bottom: 2px solid #ff9900;
+            padding-bottom: 10px;
         }
         
         .media-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
         }
         
         .media-item {
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
             position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+        
+        .media-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 153, 0, 0.3);
         }
         
         .media-item img, .media-item video {
@@ -106,48 +140,66 @@
         }
         
         .download-btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 8px 15px;
-            background-color: #000;
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: linear-gradient(90deg, #ff9900, #ff5500);
             color: white;
             text-decoration: none;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(90deg, #ffaa33, #ff7733);
+            transform: translateY(-2px);
         }
         
         .user-info {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
         }
         
         .avatar {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            margin-right: 15px;
+            margin-right: 20px;
             object-fit: cover;
+            border: 3px solid #ff9900;
         }
         
         .user-details h3 {
+            margin-bottom: 8px;
+            font-size: 1.5rem;
+            color: #ff9900;
+        }
+        
+        .user-details p {
             margin-bottom: 5px;
+            color: #ddd;
         }
         
         .loading {
             text-align: center;
-            padding: 20px;
+            padding: 40px;
             display: none;
         }
         
         .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #000;
+            border: 4px solid rgba(255, 153, 0, 0.3);
+            border-left-color: #ff9900;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
         }
         
         @keyframes spin {
@@ -155,34 +207,94 @@
         }
         
         .error {
-            background-color: #ffebee;
-            color: #c62828;
-            padding: 15px;
-            border-radius: 8px;
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff6666;
+            padding: 20px;
+            border-radius: 12px;
             margin-top: 20px;
             display: none;
+            border-left: 5px solid #ff3333;
         }
         
         footer {
             text-align: center;
-            margin-top: 40px;
-            padding: 20px 0;
-            color: #777;
+            margin-top: 50px;
+            padding: 30px 0;
+            color: #aaa;
             font-size: 0.9rem;
         }
         
-        @media (max-width: 600px) {
+        .instructions {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .instructions h3 {
+            color: #ff9900;
+            margin-bottom: 15px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+        
+        .api-info {
+            margin-top: 40px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 25px;
+        }
+        
+        .api-info h3 {
+            color: #ff9900;
+            margin-bottom: 15px;
+        }
+        
+        .code {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: monospace;
+            color: #ff9900;
+            margin: 15px 0;
+        }
+        
+        @media (max-width: 768px) {
             .input-group {
                 flex-direction: column;
             }
             
             input[type="text"] {
-                border-radius: 4px;
-                margin-bottom: 10px;
+                border-radius: 8px;
+                margin-bottom: 15px;
             }
             
             button {
-                border-radius: 4px;
+                border-radius: 8px;
+                width: 100%;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .avatar {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .media-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -191,12 +303,23 @@
     <div class="container">
         <header>
             <h1>Threads Downloader</h1>
-            <p class="description">Download konten dari Threads dengan mudah</p>
+            <p class="description">Download konten dari Threads dengan mudah. Dapatkan gambar dan video dari postingan Threads dalam hitungan detik.</p>
         </header>
         
         <main>
+            <div class="instructions">
+                <h3>Cara Menggunakan:</h3>
+                <ol>
+                    <li>Salin URL postingan Threads yang ingin Anda download</li>
+                    <li>Tempel URL pada kolom input di bawah</li>
+                    <li>Klik tombol "Download"</li>
+                    <li>Tunggu proses selesai dan download media yang tersedia</li>
+                </ol>
+                <p>Contoh URL: <em>https://www.threads.net/@username/post/ABC1234567</em></p>
+            </div>
+            
             <div class="input-group">
-                <input type="text" id="threadsUrl" placeholder="Masukkan URL Threads (contoh: https://www.threads.net/@username/post/...)">
+                <input type="text" id="threadsUrl" placeholder="Masukkan URL Threads di sini...">
                 <button id="downloadBtn">Download</button>
             </div>
             
@@ -210,10 +333,19 @@
             <div class="result" id="result">
                 <!-- Hasil akan ditampilkan di sini -->
             </div>
+            
+            <div class="api-info">
+                <h3>API Endpoint</h3>
+                <p>Anda juga dapat menggunakan API langsung dengan mengirimkan request GET ke:</p>
+                <div class="code">
+                    /api/threads?url=[URL_THREADS]&id=[POST_ID]
+                </div>
+                <p>Response akan dalam format JSON yang berisi data postingan dan media.</p>
+            </div>
         </main>
         
         <footer>
-            <p>Dibuat dengan ❤️ oleh Bran</p>
+            <p>Dibuat dengan ❤️ oleh Bran | Threads Downloader v1.0</p>
         </footer>
     </div>
 
@@ -295,6 +427,9 @@
                     const caption = document.createElement('p');
                     caption.textContent = data.post_detail.caption_text;
                     caption.style.marginBottom = '20px';
+                    caption.style.padding = '15px';
+                    caption.style.background = 'rgba(0,0,0,0.3)';
+                    caption.style.borderRadius = '8px';
                     resultDiv.appendChild(caption);
                 }
                 
@@ -339,11 +474,20 @@
                     });
                     
                     resultDiv.appendChild(mediaContainer);
+                } else {
+                    const noMedia = document.createElement('p');
+                    noMedia.textContent = 'Tidak ada media yang ditemukan dalam postingan ini.';
+                    noMedia.style.textAlign = 'center';
+                    noMedia.style.padding = '20px';
+                    resultDiv.appendChild(noMedia);
                 }
                 
                 // Tampilkan info tambahan
                 const postInfo = document.createElement('div');
                 postInfo.style.marginTop = '20px';
+                postInfo.style.padding = '15px';
+                postInfo.style.background = 'rgba(0,0,0,0.3)';
+                postInfo.style.borderRadius = '8px';
                 postInfo.innerHTML = `
                     <p><strong>Likes:</strong> ${data.post_detail.like_count}</p>
                     <p><strong>Dipublikasikan:</strong> ${new Date(data.post_detail.publish_time).toLocaleString()}</p>
@@ -351,6 +495,13 @@
                 resultDiv.appendChild(postInfo);
                 
                 resultDiv.style.display = 'block';
+            }
+            
+            // Contoh penggunaan langsung jika URL ada di parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const exampleUrl = urlParams.get('example');
+            if (exampleUrl) {
+                threadsUrlInput.value = exampleUrl;
             }
         });
     </script>
