@@ -293,9 +293,9 @@
                     return;
                 }
                 
-                // Validasi URL
+                // Validasi URL - perbaikan di sini
                 if (!isValidThreadsUrl(url)) {
-                    showError('URL Threads tidak valid. Pastikan URL mengandung threads.net dan /post/');
+                    showError('URL Threads tidak valid. Pastikan URL mengandung threads.net/threads.com dan /post/');
                     return;
                 }
                 
@@ -329,7 +329,7 @@
             });
             
             function isValidThreadsUrl(url) {
-                return url.includes('threads.net') && url.includes('/post/');
+                return (url.includes('threads.net') || url.includes('threads.com')) && url.includes('/post/');
             }
             
             function showError(message) {
