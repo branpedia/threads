@@ -153,12 +153,40 @@
             border-radius: 8px;
             overflow: hidden;
             background: rgba(0, 0, 0, 0.5);
+            position: relative;
         }
         
         .media-item img, .media-item video {
             width: 100%;
             height: auto;
             display: block;
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .play-icon::before {
+            content: '';
+            border-style: solid;
+            border-width: 10px 0 10px 16px;
+            border-color: transparent transparent transparent #ffffff;
+            margin-left: 4px;
         }
         
         .download-btn {
@@ -171,6 +199,13 @@
             border-radius: 4px;
             font-weight: bold;
             margin-top: 10px;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(90deg, #ffaa33, #ff7733);
         }
         
         .api-info {
@@ -257,16 +292,35 @@
             </div>
             
             <div class="api-info">
-                <h3>API V2 Documentation</h3>
-                <p>API ini menggunakan endpoint V2 yang mengambil ID post dari URL Threads:</p>
+                <h3>API Documentation</h3>
+                <p>Anda juga dapat mengakses API ini langsung melalui endpoint berikut:</p>
                 <div class="code">
-                    GET https://www.dolphinradar.com/api/threads/post_detail/{post_id}
+                    GET /api/threads?url={threads_url}
                 </div>
-                <p>Contoh penggunaan:</p>
+                <p>Contoh penggunaan dengan curl:</p>
                 <div class="code">
-                    https://www.dolphinradar.com/api/threads/post_detail/DN7QaQkATv7?xmt=AQF0OtHSzHZnbK3tH8eoJydu9W_1G_aal4306kSzZjjmuw&slof=1
+                    curl -X 'GET' \<br>
+                    'https://your-vercel-app.vercel.app/api/threads?url=https://www.threads.net/@yoda_erika/post/DN53X7Ik3al' \<br>
+                    -H 'accept: application/json'
                 </div>
-                <p>Response JSON akan berisi data postingan dan media.</p>
+                <p>Response JSON akan berisi:</p>
+                <div class="code">
+                    {<br>
+                    &nbsp;&nbsp;"success": true,<br>
+                    &nbsp;&nbsp;"data": {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"username": "otaku_anime_indonesia",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"full_name": "Otaku Anime Indonesia",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"caption": "Kerjanya nonton apa?!",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"likes": 857,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"media": [<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type": "video",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"url": "https://video-url.mp4"<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;]<br>
+                    &nbsp;&nbsp;}<br>
+                    }
+                </div>
             </div>
         </main>
         
@@ -379,7 +433,7 @@
                 const userInfo = document.createElement('div');
                 userInfo.className = 'user-info';
                 userInfo.innerHTML = `
-                    <img src="${data.user.avatar}" alt="${data.user.full_name}" class="avatar">
+                    <img src="${data.user.avatar}" alt="${data.user.full_name}" class="avatar" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NjYiIGR5PSIuNGVtIj5QUDwvdGV4dD48L3N2Zz4='">
                     <div class="user-details">
                         <h3>${data.user.full_name} ${data.user.verified ? '✓' : ''}</h3>
                         <p>@${data.user.username} | ${data.user.follower_count.toLocaleString()} followers</p>
@@ -408,27 +462,53 @@
                             const img = document.createElement('img');
                             img.src = media.url || media.cover_image;
                             img.alt = 'Threads image';
+                            img.onerror = function() {
+                                this.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NjYiIGR5PSIuM2VtIj5JbWFnZTwvdGV4dD48L3N2Zz4=';
+                            };
                             mediaItem.appendChild(img);
                             
-                            const downloadLink = document.createElement('a');
-                            downloadLink.href = media.url || media.cover_image;
-                            downloadLink.className = 'download-btn';
-                            downloadLink.textContent = 'Download Gambar';
-                            downloadLink.download = true;
-                            mediaItem.appendChild(downloadLink);
+                            const downloadBtn = document.createElement('button');
+                            downloadBtn.className = 'download-btn';
+                            downloadBtn.textContent = 'Download Gambar';
+                            downloadBtn.onclick = function() {
+                                downloadMedia(media.url || media.cover_image, `threads-image-${index+1}.jpg`);
+                            };
+                            mediaItem.appendChild(downloadBtn);
                         } else if (media.type === 'video') {
-                            // Gunakan cover image sebagai thumbnail
+                            const videoThumb = document.createElement('div');
+                            videoThumb.className = 'video-thumbnail';
+                            
                             const img = document.createElement('img');
                             img.src = media.cover_image;
                             img.alt = 'Video thumbnail';
-                            mediaItem.appendChild(img);
+                            img.onerror = function() {
+                                this.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMyIvPjxwb2x5Z29uIHBvaW50cz0iNzAsNDAgNzAsMTYwIDE2MCwxMDAiIGZpbGw9IiM2NjYiLz48L3N2Zz4=';
+                            };
+                            videoThumb.appendChild(img);
                             
-                            const downloadLink = document.createElement('a');
-                            downloadLink.href = media.url;
-                            downloadLink.className = 'download-btn';
-                            downloadLink.textContent = 'Download Video';
-                            downloadLink.download = true;
-                            mediaItem.appendChild(downloadLink);
+                            const playIcon = document.createElement('div');
+                            playIcon.className = 'play-icon';
+                            videoThumb.appendChild(playIcon);
+                            
+                            // Ketika thumbnail diklik, tampilkan video
+                            videoThumb.onclick = function() {
+                                const videoElement = document.createElement('video');
+                                videoElement.controls = true;
+                                videoElement.src = media.url;
+                                videoElement.style.width = '100%';
+                                
+                                videoThumb.replaceWith(videoElement);
+                            };
+                            
+                            mediaItem.appendChild(videoThumb);
+                            
+                            const downloadBtn = document.createElement('button');
+                            downloadBtn.className = 'download-btn';
+                            downloadBtn.textContent = 'Download Video';
+                            downloadBtn.onclick = function() {
+                                downloadMedia(media.url, `threads-video-${index+1}.mp4`);
+                            };
+                            mediaItem.appendChild(downloadBtn);
                         }
                         
                         mediaContainer.appendChild(mediaItem);
@@ -452,6 +532,34 @@
                 resultDiv.appendChild(postInfo);
                 
                 resultDiv.style.display = 'block';
+            }
+            
+            function downloadMedia(url, filename) {
+                // Gunakan fetch untuk mengunduh media
+                fetch(url)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        // Buat URL objek untuk blob
+                        const blobUrl = URL.createObjectURL(blob);
+                        
+                        // Buat elemen a untuk mengunduh
+                        const a = document.createElement('a');
+                        a.href = blobUrl;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        
+                        // Bersihkan
+                        setTimeout(() => {
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(blobUrl);
+                        }, 100);
+                    })
+                    .catch(error => {
+                        console.error('Error downloading media:', error);
+                        // Fallback: buka di tab baru jika download langsung gagal
+                        window.open(url, '_blank');
+                    });
             }
             
             // Contoh URL untuk testing
