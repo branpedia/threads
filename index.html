@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Threads Downloader</title>
+    <title>Threads Downloader V2</title>
     <style>
         * {
             margin: 0;
@@ -235,13 +235,13 @@
 <body>
     <div class="container">
         <header>
-            <h1>Threads Downloader</h1>
-            <p class="description">Download konten dari Threads dengan mudah</p>
+            <h1>Threads Downloader V2</h1>
+            <p class="description">Download konten dari Threads dengan mudah menggunakan API V2</p>
         </header>
         
         <main>
             <div class="input-group">
-                <input type="text" id="threadsUrl" placeholder="Masukkan URL Threads (contoh: https://www.threads.net/@username/post/...)">
+                <input type="text" id="threadsUrl" placeholder="Masukkan URL Threads (contoh: https://www.threads.com/@username/post/...)">
                 <button id="downloadBtn">Download</button>
             </div>
             
@@ -257,23 +257,21 @@
             </div>
             
             <div class="api-info">
-                <h3>API Documentation</h3>
-                <p>Anda juga dapat mengakses API ini langsung melalui endpoint berikut:</p>
+                <h3>API V2 Documentation</h3>
+                <p>API ini menggunakan endpoint V2 yang mengambil ID post dari URL Threads:</p>
                 <div class="code">
-                    GET /api/threads?url={threads_url}
+                    GET https://www.dolphinradar.com/api/threads/post_detail/{post_id}
                 </div>
-                <p>Contoh penggunaan dengan curl:</p>
+                <p>Contoh penggunaan:</p>
                 <div class="code">
-                    curl -X 'GET' \<br>
-                    'https://your-vercel-app.vercel.app/api/threads?url=https://www.threads.net/@yoda_erika/post/DN53X7Ik3al' \<br>
-                    -H 'accept: application/json'
+                    https://www.dolphinradar.com/api/threads/post_detail/DN7QaQkATv7?xmt=AQF0OtHSzHZnbK3tH8eoJydu9W_1G_aal4306kSzZjjmuw&slof=1
                 </div>
                 <p>Response JSON akan berisi data postingan dan media.</p>
             </div>
         </main>
         
         <footer>
-            <p>Dibuat dengan ❤️ oleh ZenzzXD | Threads Downloader v1.0</p>
+            <p>Dibuat dengan ❤️ oleh ZenzzXD | Threads Downloader V2</p>
         </footer>
     </div>
 
@@ -293,7 +291,7 @@
                     return;
                 }
                 
-                // Validasi URL - perbaikan di sini
+                // Validasi URL
                 if (!isValidThreadsUrl(url)) {
                     showError('URL Threads tidak valid. Pastikan URL mengandung threads.net/threads.com dan /post/');
                     return;
@@ -305,22 +303,46 @@
                 resultDiv.style.display = 'none';
                 
                 try {
-                    // Panggil API
-                    const response = await fetch(`/api/threads?url=${encodeURIComponent(url)}`);
+                    // Ekstrak ID post dari URL
+                    const postId = extractPostId(url);
+                    if (!postId) {
+                        throw new Error('Gagal mengekstrak ID post dari URL');
+                    }
+                    
+                    // Panggil API V2
+                    const response = await fetch(`https://www.dolphinradar.com/api/threads/post_detail/${postId}`);
                     
                     if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error || 'Terjadi kesalahan saat memproses permintaan');
+                        throw new Error('Terjadi kesalahan saat memproses permintaan');
                     }
                     
                     const data = await response.json();
                     
-                    if (!data.success) {
+                    if (data.code !== 0 || !data.data) {
                         throw new Error(data.message || 'Gagal mengambil data');
                     }
                     
+                    // Format data untuk ditampilkan
+                    const formattedData = {
+                        user: {
+                            username: data.data.user.username,
+                            full_name: data.data.user.full_name,
+                            avatar: data.data.user.avatar,
+                            follower_count: data.data.user.follower_count,
+                            verified: data.data.user.verified
+                        },
+                        caption: data.data.post_detail.caption_text,
+                        likes: data.data.post_detail.like_count,
+                        publish_time: data.data.post_detail.publish_time,
+                        media: data.data.post_detail.media_list ? data.data.post_detail.media_list.map(media => ({
+                            type: media.media_type === 2 ? 'video' : 'image',
+                            url: media.url,
+                            cover_image: media.cover_image
+                        })) : []
+                    };
+                    
                     // Tampilkan hasil
-                    displayResult(data.data);
+                    displayResult(formattedData);
                 } catch (error) {
                     showError(error.message);
                 } finally {
@@ -330,6 +352,19 @@
             
             function isValidThreadsUrl(url) {
                 return (url.includes('threads.net') || url.includes('threads.com')) && url.includes('/post/');
+            }
+            
+            function extractPostId(url) {
+                try {
+                    // Ekstrak bagian setelah /post/
+                    const postMatch = url.match(/\/post\/([^\/\?]+)/);
+                    if (postMatch && postMatch[1]) {
+                        return postMatch[1];
+                    }
+                    return null;
+                } catch (e) {
+                    return null;
+                }
             }
             
             function showError(message) {
@@ -347,7 +382,7 @@
                     <img src="${data.user.avatar}" alt="${data.user.full_name}" class="avatar">
                     <div class="user-details">
                         <h3>${data.user.full_name} ${data.user.verified ? '✓' : ''}</h3>
-                        <p>@${data.user.username} | ${data.user.follower_count} followers</p>
+                        <p>@${data.user.username} | ${data.user.follower_count.toLocaleString()} followers</p>
                     </div>
                 `;
                 resultDiv.appendChild(userInfo);
@@ -371,21 +406,22 @@
                         
                         if (media.type === 'image') {
                             const img = document.createElement('img');
-                            img.src = media.url;
+                            img.src = media.url || media.cover_image;
                             img.alt = 'Threads image';
                             mediaItem.appendChild(img);
                             
                             const downloadLink = document.createElement('a');
-                            downloadLink.href = media.url;
+                            downloadLink.href = media.url || media.cover_image;
                             downloadLink.className = 'download-btn';
                             downloadLink.textContent = 'Download Gambar';
                             downloadLink.download = true;
                             mediaItem.appendChild(downloadLink);
                         } else if (media.type === 'video') {
-                            const video = document.createElement('video');
-                            video.controls = true;
-                            video.src = media.url;
-                            mediaItem.appendChild(video);
+                            // Gunakan cover image sebagai thumbnail
+                            const img = document.createElement('img');
+                            img.src = media.cover_image;
+                            img.alt = 'Video thumbnail';
+                            mediaItem.appendChild(img);
                             
                             const downloadLink = document.createElement('a');
                             downloadLink.href = media.url;
@@ -411,19 +447,15 @@
                 const postInfo = document.createElement('div');
                 postInfo.style.marginTop = '15px';
                 postInfo.innerHTML = `
-                    <p><strong>Likes:</strong> ${data.likes} | <strong>Dipublikasikan:</strong> ${data.publish_time}</p>
+                    <p><strong>Likes:</strong> ${data.likes.toLocaleString()} | <strong>Dipublikasikan:</strong> ${data.publish_time}</p>
                 `;
                 resultDiv.appendChild(postInfo);
                 
                 resultDiv.style.display = 'block';
             }
             
-            // Contoh penggunaan langsung jika URL ada di parameter
-            const urlParams = new URLSearchParams(window.location.search);
-            const exampleUrl = urlParams.get('url');
-            if (exampleUrl) {
-                threadsUrlInput.value = exampleUrl;
-            }
+            // Contoh URL untuk testing
+            threadsUrlInput.value = 'https://www.threads.com/@otaku_anime_indonesia/post/DN7QaQkATv7?xmt=AQF0OtHSzHZnbK3tH8eoJydu9W_1G_aal4306kSzZjjmuw&slof=1';
         });
     </script>
 </body>
